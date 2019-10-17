@@ -62,36 +62,74 @@ public:
 template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
+	if (0 < s || 0 < si || s > MAX_VECTOR_SIZE) throw "error";
+	Size = s;
+	StartIndex = si;
+	pVector = new ValType[size];
+	for (int i = 0; i < Size; i++) pVector[i] = 0;
+
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType> &v)
 {
+	if (v.Size > Size) {
+		pVector = new ValType[v.Size];
+		Size = v.Size;
+	}
+	else v.Size = Size;
+	npVector = new ValType[v.Size];
+	v.StartIndex = StartIndex;
+	for (int i = 0; i < v.Size; i++) npVector[i] = pVector[i];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType>
 TVector<ValType>::~TVector()
 {
+	delete[] pVector;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
+	if (StartIndex<0 || StartIndex>Size) throw "error";
+	return pVector[StartIndex - pos];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector &v) const
 {
+	if (v.Size != Size) return 0;
+	for (int i = 0; i < Size; i++)
+	{
+		v.pVector[i] != pVector[i];
+		return 0;
+	}
+	return 1;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator!=(const TVector &v) const
 {
+	if (v.Size != Size) return 1;
+	for (int i = 0; i < Size; i++)
+	{
+		v.pVector[i] != pVector[i];
+		return 1;
+	}
+	return 0;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // присваивание
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
+	Size = v.Size;
+	StartIndex = v.StartIndex;
+	delete[] pVector;
+	pVector = new ValType[v.Size];
+	for (int i = 0; i < Size; i++)
+		pVector[i] = v.pVector[i];
+	return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // прибавить скаляр
