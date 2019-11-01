@@ -63,12 +63,12 @@ TEST(TVector, can_set_and_get_element)
 
 TEST(TVector, throws_when_set_element_with_negative_index)
 {
-  ADD_FAILURE();
+	ASSERT_ANY_THROW(TVector<int> v(-5));
 }
 
 TEST(TVector, throws_when_set_element_with_too_large_index)
 {
-  ADD_FAILURE();
+	ASSERT_ANY_THROW(TVector<int> v(100000001));
 }
 
 TEST(TVector, can_assign_vector_to_itself)
