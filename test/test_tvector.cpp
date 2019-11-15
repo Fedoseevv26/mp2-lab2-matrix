@@ -78,7 +78,7 @@ TEST(TVector, throws_when_set_element_with_too_large_index)
 TEST(TVector, can_assign_vector_to_itself)
 {
 	TVector<int> v(5);
-	ASSERT_EQ(v, v = v);
+	EXPECT_EQ(v, v = v);
 }
 
 TEST(TVector, can_assign_vectors_of_equal_size)
