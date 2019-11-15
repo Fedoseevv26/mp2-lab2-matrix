@@ -54,7 +54,7 @@ public:
   friend ostream& operator<<(ostream &out, const TVector &v)
   {
 	  int j=0;
-	  for (int i = 0; i < v.Size; i++)
+	  for (int i = 0; i < v.Size-v.StartIndex;i++)
 	  {
 		  if (j < v.StartIndex) { out << '0' << ' '; j++; }
 		  else out << v.pVector[i] << ' ';
@@ -67,8 +67,8 @@ template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
 	if (0 > s || 0 > si || s > MAX_VECTOR_SIZE) throw "error";
-	Size = s;
 	StartIndex = si;
+	Size = s - si;
 	pVector = new ValType[Size];
 	for (int i = 0; i < Size; i++) pVector[i] = 0;
 } /*-------------------------------------------------------------------------*/
@@ -226,20 +226,20 @@ template <class ValType> // конструктор копирования
 TMatrix<ValType>::TMatrix(const TMatrix<ValType> &mt):
   TVector<TVector<ValType> >(mt) 
 {
-	Size = mt.Size;
-	StartIndex = mt.StartIndex;
-	pVector = new TVector<ValType>[mt.Size];
-	for (int i = 0; i < mt.Size; i++) pVector[i] = mt.pVector[i];
+//	Size = mt.Size;
+//	StartIndex = mt.StartIndex;
+//	pVector = new TVector<ValType>[mt.Size];
+//	for (int i = 0; i < mt.Size; i++) pVector[i] = mt.pVector[i];
 }
 
 template <class ValType> // конструктор преобразования типа
 TMatrix<ValType>::TMatrix(const TVector<TVector<ValType> > &mt):
   TVector<TVector<ValType> >(mt) 
 {
-	Size = mt.Size;
-	StartIndex = mt.StartIndex;
-	pVector = new TVector<ValType>[mt.Size];
-	for (int i = 0; i < mt.Size; i++) pVector[i] = mt.pVector[i];
+	//Size = mt.Size;
+	//StartIndex = mt.StartIndex;
+	//pVector = new TVector<ValType>[mt.Size];
+	//for (int i = 0; i < mt.Size; i++) pVector[i] = mt.pVector[i];
 }
 
 template <class ValType> // сравнение
@@ -283,6 +283,7 @@ TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 template <class ValType> // сложение
 TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
+//	return TVector<TVector<ValType> >::operator+(mt);
 	if (Size != mt.Size) throw "error";
 	TMatrix<ValType> tmp(*this);
 	for (int i = 0; i < Size; i++) tmp.pVector[i] = tmp.pVector[i] + mt.pVector[i];
