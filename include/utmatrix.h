@@ -54,10 +54,10 @@ public:
   friend ostream& operator<<(ostream &out, const TVector &v)
   {
 	  int j=0;
-	  for (int i = 0; i < v.Size-v.StartIndex;i++)
+	  for (int i = 0; i < v.Size;)
 	  {
 		  if (j < v.StartIndex) { out << '0' << ' '; j++; }
-		  else out << v.pVector[i] << ' ';
+		  else { out << v.pVector[i] << ' '; i++; }
 	  }
     return out;
   }
@@ -91,8 +91,8 @@ TVector<ValType>::~TVector()
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
-	if (pos > Size || pos < 0) throw ("error");
-	else	return pVector[pos];
+	if (pos-StartIndex > Size || pos-StartIndex < 0) throw ("error");
+	else	return pVector[pos-StartIndex];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
@@ -224,23 +224,11 @@ TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 
 template <class ValType> // конструктор копирования
 TMatrix<ValType>::TMatrix(const TMatrix<ValType> &mt):
-  TVector<TVector<ValType> >(mt) 
-{
-//	Size = mt.Size;
-//	StartIndex = mt.StartIndex;
-//	pVector = new TVector<ValType>[mt.Size];
-//	for (int i = 0; i < mt.Size; i++) pVector[i] = mt.pVector[i];
-}
+  TVector<TVector<ValType> >(mt) {}
 
 template <class ValType> // конструктор преобразования типа
 TMatrix<ValType>::TMatrix(const TVector<TVector<ValType> > &mt):
-  TVector<TVector<ValType> >(mt) 
-{
-	//Size = mt.Size;
-	//StartIndex = mt.StartIndex;
-	//pVector = new TVector<ValType>[mt.Size];
-	//for (int i = 0; i < mt.Size; i++) pVector[i] = mt.pVector[i];
-}
+  TVector<TVector<ValType> >(mt) {}
 
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
